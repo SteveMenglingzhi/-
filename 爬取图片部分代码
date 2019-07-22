@@ -2,29 +2,98 @@
 import re
 import requests
 
-
 word_1= input('请输入您想查询的诗名')
 word_2= '诗注释'
+
 url= 'http://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=-1&st=-1&fm=result&fr=&sf=1&fmq=&pv=&ic=0&nc=1&z=0&hd=0&latest=0&copyright=0&se=&showtab=0&fb=0&width=&height=&face=0&istype=2&ie=utf-8&ctd=&sid=&word='+word_1+word_2
 下载张数 = int(input('请输入张数'))
 
 html = requests.get(url).text
 
 所需数据 = re.findall('"objURL":"(.*?)",', html, re.S)
+
 print(所需数据)
+
 i = 0
 for each in 所需数据:
     if i> 下载张数 - 1:
         break
     print(each)
+
     try:
         pic = requests.get(each, timeout=4)
     except requests.exceptions.ConnectionError:
         print('错误，图片不能够被下载')
         continue
     string = str(i)+word_1+word_2+'.jpg'
+
     fp= open('./downloads/'+string, 'wb')
     fp.write(pic.content)
     fp.close()
     i+=1
-print('download finished')
+
+print('下载完成')
+
+
+
+年龄= int(input('请问您的年龄是多少？（我们会根据您的年龄自动帮您推荐一些古诗，如果不想收到的话请回复NO）'))
+if 年龄<=0 or 年龄>134:
+
+    print ('亲，没有向您这么大的')
+
+
+if 年龄<=10 and 年龄>0:
+
+    url= 'http://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=-1&st=-1&fm=result&fr=&sf=1&fmq=&pv=&ic=0&nc=1&z=0&hd=0&latest=0&copyright=0&se=&showtab=0&fb=0&width=&height=&face=0&istype=2&ie=utf-8&ctd=&sid=&word=十岁以下必读古诗'
+    下载张数_2 = 5
+    html = requests.get(url).text
+    所需数据_2 = re.findall('"objURL":"(.*?)",', html, re.S)
+    i=0
+    for each in 所需数据_2:
+        if i> 下载张数_2 - 1:
+            break
+        print(each)
+
+        try:
+            pic = requests.get(each, timeout=4)
+        except requests.exceptions.ConnectionError:
+            print('错误，图片不能够被下载')
+            continue
+
+
+        string = str(i)+'儿童古诗'+'.jpg'
+        fp= open('./downloads/'+string, 'wb')
+        fp.write(pic.content)
+        fp.close()
+        i+=1
+    print ('10岁以下儿童必学古诗以下载完成，教育局官方推荐')
+
+
+if 年龄>10 and 年龄<134:
+
+    url= 'http://image.baidu.com/search/index?tn=baiduimage&ipn=r&ct=201326592&cl=2&lm=-1&st=-1&fm=result&fr=&sf=1&fmq=&pv=&ic=0&nc=1&z=0&hd=0&latest=0&copyright=0&se=&showtab=0&fb=0&width=&height=&face=0&istype=2&ie=utf-8&ctd=&sid=&word=十岁以上必读古诗'
+    下载张数_3 = 5
+    html = requests.get(url).text
+    所需数据_3 = re.findall('"objURL":"(.*?)",', html, re.S)
+    i=0
+    for each in 所需数据_3:
+        if i> 下载张数_3 - 1:
+            break
+        print(each)
+
+        try:
+            pic = requests.get(each, timeout=4)
+        except requests.exceptions.ConnectionError:
+            print('错误，图片不能够被下载')
+            continue
+
+
+        string = str(i)+'进阶古诗'+'.jpg'
+        fp= open('./downloads/'+string, 'wb')
+        fp.write(pic.content)
+        fp.close()
+        i+=1
+    print ('10岁以上进阶必学古诗以下载完成，教育局官方推荐')
+
+if 年龄=='No':
+    print ('希望您能够继续支持我们的软件:)')
